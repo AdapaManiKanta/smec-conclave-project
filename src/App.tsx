@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import AgendaPage from './components/AgendaPage';
 import Footer from './components/Footer';
 import BackgroundEffects from './components/BackgroundEffects';
+import Loader from './components/Loader';
 import './index.css';
 
 // Handle scroll to top and animations on route change
@@ -54,20 +55,36 @@ const PageAnimations = () => {
 };
 
 function App() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading time
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <Router>
-      <PageAnimations />
-      <BackgroundEffects />
-      <div className="main-container flex flex-col min-h-screen">
-        <Navbar />
-        <div className="flex-1">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/agenda" element={<AgendaPage />} />
-          </Routes>
+      {loading && <Loader />}
+      {!loading && (
+        <div className="animate-fade-up">
+          <PageAnimations />
+          <BackgroundEffects />
+          <div className="main-container flex flex-col min-h-screen">
+            <Navbar />
+            <div className="flex-1">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/agenda" element={<AgendaPage />} />
+              </Routes>
+            </div>
+            <Footer />
+          </div>
         </div>
-        <Footer />
-      </div>
+      )}
     </Router>
   );
 }

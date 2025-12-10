@@ -263,8 +263,8 @@ svg {
 }
 
 .logo {
-    height: 50px;
-    width: auto;
+    /* height: 50px; Removed to allow Tailwind override */
+    width: 200px;
 }
 
 
@@ -327,14 +327,14 @@ svg {
 
 /* Adjust flower logo size */
 .flower-logo.large {
-    width: 300px;
-    height: 300px;
+    width: 200px;
+    height: 200px;
     /* Reverted scale as user meant navbar logo */
 }
 
 /* Navbar Logo specific fix */
 .navbar-logo img {
-    height: 60px;
+    height: 40px;
     /* Increased from default/previous value */
     /* If it was smaller, this should make it bigger. Default might have been 40px or 50px */
     width: auto;
@@ -401,58 +401,130 @@ svg {
     margin-top: var(--space-md);
 }
 
-/* Countdown Bar */
-.countdown-container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto var(--space-xl);
+/* Hero Header Row (Side-by-Side) */
+.hero-header-row {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.5rem 3rem;
-    background: rgba(10, 10, 18, 0.7);
-    border: 1px solid rgba(212, 168, 83, 0.3);
-    border-radius: 50px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 0 30px rgba(212, 168, 83, 0.1);
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-bottom: var(--space-md);
 }
 
-.countdown-label {
-    font-size: 1.25rem;
+/* Calendar Widget Box */
+.calendar-widget {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(212, 168, 83, 0.3);
+    border-radius: 12px;
+    width: 140px;
+    /* Square-ish profile */
+    height: 140px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.calendar-widget:hover {
+    transform: translateY(-5px);
+    border-color: var(--color-gold);
+}
+
+.cal-header {
+    background: var(--gradient-gold);
+    color: var(--color-bg-primary);
+    font-size: 0.8rem;
     font-weight: 700;
+    text-align: center;
+    padding: 0.25rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.cal-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem;
+    position: relative;
+    background: rgba(20, 20, 35, 0.6);
+}
+
+/* The Big 'Days' Number */
+.cal-days {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--color-text-primary);
+    background: linear-gradient(180deg, #fff 0%, #bbb 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.cal-label {
+    font-size: 0.9rem;
+    font-weight: 600;
     color: var(--color-gold);
+    margin-bottom: 0.25rem;
     letter-spacing: 2px;
 }
 
-.countdown-timer {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.time-block {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.time-value {
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--color-text-primary);
-    line-height: 1;
-}
-
-.time-label {
-    font-size: 0.75rem;
+/* Small Timer at bottom */
+.cal-small-timer {
+    font-family: monospace;
+    font-size: 0.8rem;
     color: var(--color-text-muted);
-    letter-spacing: 1px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 0.25rem;
+    width: 100%;
+    text-align: center;
 }
 
-.time-separator {
-    font-size: 2rem;
-    color: var(--color-gold);
-    margin-top: -10px;
+/* Mobile Adjustments for Calendar */
+@media (max-width: 600px) {
+
+    /* Stack them again on very small screens, or keep side-by-side if fits */
+    .hero-header-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .calendar-widget {
+        width: 120px;
+        height: 120px;
+        order: -1;
+        /* Keep it on top or let it stay side? User said "Side Left", but on mobile usually stack. Let's stack Title on top or Cal on top? Usually Title first on mobile. */
+    }
+
+    /* Or maybe side-by-side but smaller? */
+    .hero-header-row {
+        flex-direction: row;
+        /* Try to keep side by side if possible */
+        justify-content: center;
+    }
+
+    .hero-title {
+        text-align: left;
+    }
+}
+
+@media (max-width: 450px) {
+
+    /* Stack on tiny screens */
+    .hero-header-row {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hero-title {
+        align-items: center;
+        text-align: center;
+    }
 }
 
 /* Stats Grid */
@@ -1299,24 +1371,51 @@ svg {
         display: none;
     }
 
-    /* Fix Timeline for Mobile */
+    /* Fix Structure/Timeline for Mobile: Grid Layout */
+    .structure-timeline {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+    }
+
     .timeline-item {
         flex-direction: column;
         align-items: center;
-        /* Center items */
-        gap: var(--space-sm);
+        gap: 0.25rem;
         text-align: center;
-        /* Center text */
+        padding: 0.5rem;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
-    /* Adjust connector line to be centered */
+    /* Hide connector lines */
     .timeline-item:not(:last-child)::after {
-        left: 50%;
-        transform: translateX(-50%);
-        top: 80px;
-        /* Below the number bubble */
-        bottom: -20px;
-        /* Extend to next item */
+        display: none;
+    }
+
+    .timeline-number {
+        width: 30px;
+        height: 30px;
+        font-size: 0.8rem;
+        margin: 0 auto;
+        box-shadow: none;
+    }
+
+    .timeline-content {
+        padding: 0;
+        border: none;
+        background: transparent;
+    }
+
+    .timeline-content h3 {
+        font-size: 0.8rem;
+        margin-bottom: 0.2rem;
+    }
+
+    .timeline-content p {
+        font-size: 0.6rem;
+        line-height: 1.1;
     }
 
 
@@ -1347,14 +1446,71 @@ svg {
         margin-bottom: var(--space-md);
     }
 
-    /* Contact Section Mobile Stacking */
+    /* Contact Section Mobile: Stacked for proper viewing */
     .contact-content {
         grid-template-columns: 1fr;
-        gap: var(--space-md);
+        gap: 1rem;
     }
 
     .contact-left-col {
-        gap: var(--space-md);
+        grid-template-columns: 1fr;
+        /* Stacked */
+        gap: 1rem;
+    }
+
+    .contact-info,
+    .organizers {
+        padding: 0.5rem !important;
+    }
+
+    .contact-info h3,
+    .organizers h3,
+    .contact-form-container h3,
+    .newsletter-form h3 {
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .contact-item {
+        font-size: 0.6rem;
+        margin-bottom: 0.25rem;
+        gap: 0.25rem;
+    }
+
+    .organizer-name {
+        font-size: 0.7rem;
+    }
+
+    .organizer-role {
+        font-size: 0.6rem;
+    }
+
+    /* Contact Form Compact */
+    .contact-form-container {
+        padding: 0.5rem !important;
+    }
+
+    .contact-form-container form {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+    }
+
+    .contact-form-container input,
+    .contact-form-container textarea {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+        width: 100%;
+    }
+
+    .contact-form-container textarea,
+    .contact-form-container button {
+        grid-column: span 2;
+    }
+
+    .cta-button {
+        padding: 0.5rem;
+        font-size: 0.9rem;
     }
 
     /* Pillars Mobile - 1 Row 4 Columns as requested */
@@ -1392,20 +1548,42 @@ svg {
         overflow: hidden;
     }
 
-    /* Themes Mobile */
+    /* Themes Mobile: Side-by-side Compact */
+    .themes-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        /* Side-by-side */
+        gap: 0.5rem;
+        margin-bottom: var(--space-md);
+    }
+
     .theme-card {
-        min-width: 100%;
-        /* Full width on mobile */
-        padding: var(--space-md);
+        min-width: 0;
+        padding: 0.5rem;
+    }
+
+    .theme-icon {
+        font-size: 1.5rem;
+        /* Smaller icon */
+        margin-bottom: 0.25rem;
+    }
+
+    .theme-card h3 {
+        font-size: 0.8rem;
+        margin-bottom: 0.2rem;
+    }
+
+    .theme-card p {
+        font-size: 0.6rem;
     }
 
     .tech-tags {
-        gap: 0.5rem;
+        gap: 0.3rem;
     }
 
     .tech-tag {
-        font-size: 0.8rem;
-        padding: 0.4rem 1rem;
+        font-size: 0.7rem;
+        padding: 0.3rem 0.8rem;
     }
 
     /* Footer Mobile */
@@ -1493,6 +1671,52 @@ svg {
     .stat-label {
         font-size: 0.7rem;
     }
+
+    /* About Section Mobile: Side-by-side Compact */
+    .about-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+    }
+
+    .about-text {
+        padding-left: 0.5rem;
+        padding-top: 0;
+        border-left: 1px solid rgba(212, 168, 83, 0.3);
+        border-top: none;
+    }
+
+    .mission-statement {
+        font-size: 0.8rem;
+        line-height: 1.3;
+    }
+
+    .tagline {
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+    }
+
+    .about-card {
+        padding: 0.5rem;
+    }
+
+    .about-card h3 {
+        font-size: 0.9rem;
+    }
+
+    .about-card p {
+        font-size: 0.7rem;
+    }
+
+    .card-icon {
+        width: 40px;
+        height: 40px;
+        margin-bottom: 0.5rem;
+    }
+
+    .card-icon svg {
+        width: 20px;
+        height: 20px;
+    }
 }
 
 .footer-title {
@@ -1546,4 +1770,8 @@ svg {
 .hero-stats-grid,
 .agenda-container {
     perspective: 1000px;
+}
+
+.animate-fade-up {
+    animation: fade-up 0.8s ease backwards;
 }

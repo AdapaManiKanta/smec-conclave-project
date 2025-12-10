@@ -37,20 +37,33 @@ const Contact = () => {
         }, 1500);
     };
 
-    const handleNewsletterSubmit = (e) => {
+    const handleNewsletterSubmit = async (e) => {
         e.preventDefault();
         setStatus('subscribing');
 
-        // Simulate submission
-        setTimeout(() => {
-            setStatus('success');
+        try {
+            const response = await fetch('http://localhost:3000/send-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email }),
+            });
 
-            // Reset after delay
-            setTimeout(() => {
-                setStatus('idle');
-                setEmail('');
-            }, 3000);
-        }, 1500);
+            if (response.ok) {
+                setStatus('success');
+                setEmail(''); // Clear input
+                setTimeout(() => setStatus('idle'), 5000);
+            } else {
+                console.error('Failed to subscribe');
+                setStatus('idle'); // Or 'error' state if you had one
+                alert('Failed to send email. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            setStatus('idle');
+            alert('Server unavailable. Please ensure the backend is running.');
+        }
     };
 
     return (
@@ -110,6 +123,7 @@ const Contact = () => {
 
                 {/* Right Column: Contact Form */}
                 <div className="contact-form-container glass-card h-full">
+                    <h1 className="gradient-text" style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '1rem' }}>Register To Get Notify</h1>
                     <h3>Send us a Message</h3>
                     <iframe name="hidden_iframe" id="hidden_iframe" style={{ display: 'none' }}></iframe>
                     <form
@@ -179,7 +193,7 @@ const Contact = () => {
 
                 {/* Bottom: Newsletter */}
                 <div className="newsletter-form glass-card" style={{ gridColumn: '1 / -1', textAlign: 'center' }}>
-                    <h3>Stay Updated</h3>
+                    <h3>Get Event Details</h3>
                     <p>Subscribe to be the first to know when registration opens</p>
                     <form className="subscribe-form" onSubmit={handleNewsletterSubmit} style={{ maxWidth: '600px', margin: '2rem auto 0' }}>
                         <input

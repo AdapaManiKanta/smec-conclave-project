@@ -37,11 +37,11 @@ const AgendaPage: React.FC = () => {
             },
             {
                 time: "10:30 AM",
-                title: "Knowledge Bubble: Global Innovation Trends",
+                title: "Knowledge Bubble",
                 type: "Panel Discussion",
                 category: "Main Stage",
                 speaker: "Industry Leaders & Policymakers",
-                description: "Discussion on national strategies, funding frameworks, and R&D."
+                description: "Policymakers, industry leaders, startup founders, academicians and scientists discuss global and national strategies, funding frameworks, R&D etc."
             },
             {
                 time: "01:00 PM",
@@ -53,19 +53,19 @@ const AgendaPage: React.FC = () => {
             },
             {
                 time: "02:00 PM",
-                title: "Ignite Expo Opening",
+                title: "BusiTech Expo",
                 type: "Exhibition",
                 category: "Innovation Zone",
                 speaker: "Student Innovators",
-                description: "Showcasing top 20 pre-summit student innovation teams."
+                description: "Features a Professional Startup Expo and Student Innovation Expo, focusing on innovation and entrepreneurship."
             },
             {
                 time: "03:30 PM",
-                title: "Idea2Impact",
+                title: "Alpha 2 Infiniti",
                 type: "Competition",
                 category: "Competition",
                 speaker: "Mentors & Teams",
-                description: "Student teams present solutions to real-world problems."
+                description: "Students form into random teams to solve real world problems under the guidance of mentors to promote \"Rising minds for Global Impact\"."
             }
         ],
         2: [
@@ -75,7 +75,7 @@ const AgendaPage: React.FC = () => {
                 type: "Pitch",
                 category: "Competition",
                 speaker: "School Students (8th-10th)",
-                description: "Young entrepreneurs pitch ideas to expert mentors."
+                description: "Little masters pitch their ideas to panel of mentors (8th to 10th class school students)."
             },
             {
                 time: "11:30 AM",
@@ -83,7 +83,7 @@ const AgendaPage: React.FC = () => {
                 type: "Investment Pitch",
                 category: "Pitching",
                 speaker: "Startups & Investors",
-                description: "Seed funding pitches. Potential investment up to 10 Crore INR."
+                description: "Start ups pitch to investors panel for seed funding and potential investment up to 10 crore INR*."
             },
             {
                 time: "01:00 PM",
@@ -105,7 +105,7 @@ const AgendaPage: React.FC = () => {
     };
 
     const filteredEvents = schedule[activeDay].filter(item =>
-        activeFilter === 'All' || item.category === activeFilter || item.category === 'All'
+        activeFilter === 'All' || item.category.trim() === activeFilter.trim() || item.category === 'All'
     );
 
     return (
@@ -148,8 +148,8 @@ const AgendaPage: React.FC = () => {
                             <button
                                 key={filter}
                                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border ${activeFilter === filter
-                                        ? 'bg-gold text-bg-primary border-gold shadow-[0_0_15px_rgba(212,168,83,0.4)] scale-105'
-                                        : 'bg-transparent text-gray-400 border-white/10 hover:border-gold hover:text-gold'
+                                    ? 'bg-gold text-bg-primary border-gold shadow-[0_0_15px_rgba(212,168,83,0.4)] scale-105'
+                                    : 'bg-transparent text-gray-400 border-white/10 hover:border-gold hover:text-gold'
                                     }`}
                                 onClick={() => setActiveFilter(filter)}
                             >
@@ -167,13 +167,13 @@ const AgendaPage: React.FC = () => {
                     <div className="flex flex-col gap-8 md:gap-12">
                         {filteredEvents.map((item, index) => (
                             <div
-                                key={index}
+                                key={`${item.title}-${item.time}`}
                                 className={`flex flex-col md:flex-row gap-6 items-start md:items-center group ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}
                                 style={{ animationDelay: `${index * 150}ms` }}
                             >
                                 {/* Event Card */}
                                 <div className="w-full md:w-1/2 flex justify-center">
-                                    <div className={`w-full max-w-xl glass-card p-6 md:p-8 rounded-2xl border border-white/10 relative overflow-hidden group-hover:border-gold/50 transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] fade-init`}>
+                                    <div className={`w-full max-w-xl glass-card p-6 md:p-8 rounded-2xl border border-white/10 relative overflow-hidden group-hover:border-gold/50 transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] animate-fade-up`}>
                                         <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                                             <i className="text-6xl md:text-8xl text-gold">★</i>
                                         </div>

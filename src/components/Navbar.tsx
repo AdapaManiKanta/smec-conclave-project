@@ -33,12 +33,12 @@ const Navbar = () => {
     return (
         <nav className="navbar fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-6 md:px-12 py-4" style={navbarStyle}>
             <div className="flex justify-between items-center max-w-7xl mx-auto w-full">
-                <div className="logo-container z-50">
+                <div className="logo-container z-100">
                     <Link to="/" onClick={() => setIsMenuOpen(false)}>
                         <img
                             src={logo}
                             alt="SMEC Global Innovators Conclave Logo"
-                            className="logo h-12 md:h-16 w-auto hover:rotate-2 transition-transform duration-300"
+                            className="logo h-16 md:h-24 w-auto hover:rotate-2 transition-transform duration-300"
                             onError={(e: any) => { e.target.style.display = 'none'; }}
                         />
                     </Link>
