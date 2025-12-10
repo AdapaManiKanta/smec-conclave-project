@@ -85,6 +85,12 @@ a {
     text-decoration: none;
 }
 
+img,
+svg {
+    max-width: 100%;
+    height: auto;
+}
+
 /* ===== Background Effects ===== */
 .background-effects {
     position: fixed;
@@ -210,9 +216,6 @@ a {
     left: 0;
     right: 0;
     z-index: 1000;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     padding: var(--space-sm) var(--space-lg);
     background: rgba(10, 10, 18, 0.8);
     backdrop-filter: blur(20px);
@@ -229,10 +232,7 @@ a {
     width: auto;
 }
 
-.nav-links {
-    display: flex;
-    gap: var(--space-md);
-}
+
 
 .nav-link {
     font-size: 0.95rem;
@@ -322,7 +322,8 @@ a {
 .block-title {
     display: block;
     font-family: var(--font-display);
-    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-size: clamp(2rem, 4vw, 3rem);
+    /* Decreased from 2.5rem/4rem */
     font-weight: 800;
     line-height: 1.1;
     color: var(--color-text-primary);
@@ -333,7 +334,8 @@ a {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-size: clamp(3rem, 6vw, 5rem);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    /* Decreased from 3rem/5rem */
 }
 
 .hero-event-details {
@@ -341,7 +343,10 @@ a {
 }
 
 .event-name {
-    font-size: 1.5rem;
+    font-size: 2.5rem;
+    /* Increased from 1.5rem */
+    font-weight: 700;
+    /* Added weight for emphasis */
     color: var(--color-gold);
     margin-bottom: 0.5rem;
 }
@@ -350,7 +355,8 @@ a {
     display: flex;
     align-items: center;
     gap: 1rem;
-    font-size: 1.1rem;
+    font-size: 1.3rem;
+    /* Increased from 1.1rem */
     color: var(--color-text-secondary);
 }
 
@@ -512,14 +518,55 @@ a {
     }
 
     .hero-visual-left {
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 0.15;
+        z-index: 0;
         padding-right: 0;
-        justify-content: center;
-        margin-bottom: var(--space-md);
+        margin-bottom: 0;
+        pointer-events: none;
+        /* Ensure clicks pass through */
     }
 
     .hero-text-content {
         text-align: center;
         width: 100%;
+        position: relative;
+        z-index: 2;
+        padding: 0 1rem;
+        /* Add padding to prevent edge touching */
+    }
+
+    /* Challenge 1: Title in one line on mobile */
+    .hero-title {
+        display: flex;
+        flex-wrap: wrap;
+        /* Allow wrap if screen is VERY small, but try to stay one line */
+        justify-content: center;
+        column-gap: 0.5rem;
+        /* Space between words */
+        width: 100%;
+    }
+
+    .block-title,
+    .block-title.highlight {
+        display: inline-block;
+        font-size: clamp(1.2rem, 3.5vw, 1.8rem);
+        /* Much smaller for mobile one-line */
+        width: auto;
+    }
+
+    /* Challenge 2: Event Name in 2 lines on mobile */
+    .event-name {
+        font-size: 1.8rem;
+        /* Reduced from 2.5rem to fit 2 lines */
+        line-height: 1.3;
+        max-width: 90%;
+        /* Ensure it wraps nicely */
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .hero-cta-group {
@@ -1201,19 +1248,45 @@ a {
         --space-xl: 4rem;
     }
 
-    .nav-links {
-        display: none;
-        /* Mobile menu implementation needed */
+    /* .nav-links is hidden by Tailwind md:flex utility */
+
+    /* Fix Event Meta Stacking */
+    .event-meta {
+        flex-direction: column;
+        gap: 0.5rem;
     }
 
+    .event-meta .separator {
+        display: none;
+    }
+
+    /* Fix Timeline for Mobile */
     .timeline-item {
         flex-direction: column;
+        align-items: center;
+        /* Center items */
         gap: var(--space-sm);
+        text-align: center;
+        /* Center text */
     }
 
+    /* Adjust connector line to be centered */
     .timeline-item:not(:last-child)::after {
-        left: 35px;
+        left: 50%;
+        transform: translateX(-50%);
         top: 80px;
+        /* Below the number bubble */
+        bottom: -20px;
+        /* Extend to next item */
+    }
+
+    .timeline-number {
+        margin: 0 auto;
+        /* Ensure circle is centered */
+        box-shadow: 0 0 15px rgba(212, 168, 83, 0.2);
+        background: var(--color-bg-primary);
+        /* Ensure it covers the line if needed */
+        z-index: 1;
     }
 
     .subscribe-form {
